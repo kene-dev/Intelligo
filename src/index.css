@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+
+
+.loginBG {
+    background-image: url('./assets/loginImg.png');
+    background-size: cover;
+    background-position: right;
+    background-repeat: no-repeat;
+}
+
+.onboardBG{
+    background-image: url("./assets/onboardImage.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
