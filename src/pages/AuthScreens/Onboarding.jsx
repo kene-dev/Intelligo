@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.svg";
-import { OnboardForm1, OnboardForm2, OnboardForm3 } from "./components";
+import {
+  OnboardForm1,
+  OnboardForm2,
+  OnboardForm3,
+  OnboardForm4,
+} from "./components";
 
 const Onboarding = () => {
   const [currentView, setCurrentView] = useState("welcome");
 
-  // Render different views based on the current state
+  const handleProceed = (option) => {
+    setCurrentView(option);
+  };
+
+  // Render different views based on the currentView state
   const renderView = () => {
     switch (currentView) {
       case "form1":
-        return <OnboardForm1 />;
+        return <OnboardForm1 handleProceed={handleProceed} />;
       case "form2":
-        return <OnboardForm2 />;
+        return <OnboardForm2 handleProceed={handleProceed} />;
       case "form3":
-        return <OnboardForm3 />;
+        return <OnboardForm3 handleProceed={handleProceed} />;
+      case "form4":
+        return <OnboardForm4 handleProceed={handleProceed} />;
       default:
         return (
           <div className="w-full h-full flex items-center justify-start ">
@@ -23,6 +34,24 @@ const Onboarding = () => {
           </div>
         );
     }
+  };
+
+  // Render page number based on the currentView state
+  const renderPageNumber = () => {
+    let pageNumber;
+    if (currentView === "form1") {
+      pageNumber = "1";
+    } else if (currentView === "form2") {
+      pageNumber = "2";
+    } else if (currentView === "form3") {
+      pageNumber = "3";
+    } else if (currentView === "form4") {
+      pageNumber = "4";
+    } else {
+      pageNumber = "0";
+    }
+
+    return pageNumber;
   };
 
   useEffect(() => {
@@ -40,20 +69,33 @@ const Onboarding = () => {
             <div className="w-max flex items-center gap-3">
               <div
                 className={`h-[7px] w-[38px] ${
-                  currentView !== "form1" ? "bg-black/20" : "bg-[#800080]"
+                  currentView !== "form1" ? "bg-black/20" : "bg-primary"
                 }  rounded-lg`}
               ></div>
-              <div className="h-[7px] w-[38px] bg-black/20 rounded-lg "></div>
-              <div className="h-[7px] w-[38px] bg-black/20 rounded-lg "></div>
-              <div className="h-[7px] w-[38px] bg-black/20 rounded-lg "></div>
+              <div
+                className={`h-[7px] w-[38px] ${
+                  currentView !== "form2" ? "bg-black/20" : "bg-primary"
+                }  rounded-lg`}
+              ></div>
+              <div
+                className={`h-[7px] w-[38px] ${
+                  currentView !== "form3" ? "bg-black/20" : "bg-primary"
+                }  rounded-lg`}
+              ></div>
+              <div
+                className={`h-[7px] w-[38px] ${
+                  currentView !== "form4" ? "bg-black/20" : "bg-primary"
+                }  rounded-lg`}
+              ></div>
             </div>
-            <p className="text-black/50 text-sm w-max font-semibold">1 of 4</p>
+            <p className="text-black/50 text-sm w-max font-semibold">
+              {renderPageNumber()} of 4
+            </p>
           </div>
         )}
-
-        {/* MAIN CARD SECTION STARTS */}
+        {/* MAIN SECTION STARTS */}
         {renderView()}
-        {/* MAIN CARD SECTION ENDS */}
+        {/* MAIN SECTION ENDS */}
       </div>
 
       {/* ONBOARDING IMAGE DISPLAY STARTS */}

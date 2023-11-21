@@ -10,7 +10,7 @@ const Inputs = ({ label, type, placeholder, onChange, value, name }) => {
         name={name}
         onChange={onChange}
         value={value}
-        className="appearance-none border-[.5px] text-sm focus:outline-[#800080] focus:outline-[.3px] border-black/50 h-[45px] w-full p-2  transition-all duration-200 rounded-md"
+        className="appearance-none border-[.5px] text-sm focus:outline-primary focus:outline-[.3px] border-black/50 h-[45px] w-full p-2  transition-all duration-200 rounded-md"
       />
     </div>
   );

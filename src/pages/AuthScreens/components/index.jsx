@@ -60,7 +60,6 @@ export const LoginForm = () => {
     </div>
   );
 };
-// LOGIN FORM COMPONENT ENDS HERE
 
 // REGISTER FORM COMPONENT STARTS HERE
 export const RegisterForm = () => {
@@ -151,10 +150,9 @@ export const RegisterForm = () => {
     </div>
   );
 };
-// REGISTER FORM COMPONENT ENDS HERE
 
-// ONBOARD FORM1 COMPONENT STARTS HERE
-export const OnboardForm1 = () => {
+// ONBOARD FORMS COMPONENT STARTS HERE
+export const OnboardForm1 = ({ handleProceed }) => {
   const [active, setActive] = useState(null);
   const data = [
     {
@@ -192,6 +190,7 @@ export const OnboardForm1 = () => {
           >
             <Kyc
               title={item.title}
+              tsize
               text={item.text}
               selected={active === index ? true : false}
             />
@@ -207,7 +206,66 @@ export const OnboardForm1 = () => {
           </div>
         </div>
 
-        <button className="w-max px-12 py-2 bg-[#800080] text-white rounded-md">
+        <div
+          onClick={() => handleProceed("form2")}
+          className="w-max px-12 py-2 bg-[#800080] text-white rounded-md"
+        >
+          Next
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const OnboardForm2 = ({ handleProceed }) => {
+  const [active, setActive] = useState(null);
+  const data = [
+    {
+      text: "To learn new skills and  knowledge",
+    },
+    {
+      text: "To stay up-to-date onthe latest trends and technologies",
+    },
+    {
+      text: "To prepare for exams and Technologies",
+    },
+    {
+      text: "To Improve your personal development",
+    },
+  ];
+
+  const handleActive = (item) => {
+    setActive(item);
+  };
+
+  return (
+    <div className="w-full h-full flex flex-col gap-12 items-start">
+      <h1 className="font-bold text-2xl">What are your learning goals ?</h1>
+
+      <div className="w-full flex items-start gap-4">
+        {data.map((item, index) => (
+          <div
+            onClick={() => handleActive(index)}
+            className="w-full h-[290px]"
+            key={index}
+          >
+            <Kyc text={item.text} selected={active === index ? true : false} />
+          </div>
+        ))}
+      </div>
+
+      <div className=" w-full flex items-end justify-between ">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-[#800080]">Not Here?</h1>
+          <div className="w-[300px]">
+            <Inputs type={"text"} placeholder={"Type what you do"} />
+          </div>
+        </div>
+
+        <button
+          onClick={() => handleProceed("form3")}
+          className="w-max px-12 py-2 bg-[#800080] text-white rounded-md"
+        >
           Next
         </button>
       </div>
@@ -215,10 +273,131 @@ export const OnboardForm1 = () => {
   );
 };
 
-export const OnboardForm2 = () => {
-  return <div>Form 1</div>;
+export const OnboardForm3 = ({ handleProceed }) => {
+  const [active, setActive] = useState(null);
+  const data = [
+    {
+      title: "Beginner",
+      text: `I have never used an e-learning application before. 
+    
+      I have only used an e-learning application once or twice. 
+ 
+      I am still learning how to use e-learning applications`,
+    },
+
+    {
+      title: "Intermediate",
+      text: `I have used e-learning applications on several occasions. 
+         I am familiar with the basic features of most e-learning applications. 
+        I am able to use e-learning applications to complete courses and learn new skills`,
+    },
+
+    {
+      title: "Advanced",
+      text: `I have extensive experience using e-learning applications.
+      I am able to use all of the features of most e-learning applications. 
+      I am able to use e-learning applications to create and teach my own courses`,
+    },
+  ];
+
+  const handleActive = (item) => {
+    setActive(item);
+  };
+
+  return (
+    <div className="w-full h-full flex flex-col gap-12 items-start">
+      <h1 className="font-bold text-2xl">
+        What is your level of experience with e-learning applications{" "}
+      </h1>
+
+      <div className="w-full flex items-start gap-4">
+        {data.map((item, index) => (
+          <div
+            onClick={() => handleActive(index)}
+            className="w-full h-[290px]"
+            key={item.title}
+          >
+            <Kyc
+              title={item.title}
+              tsize
+              list
+              text={item.text}
+              selected={active === index ? true : false}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className=" w-full flex items-end justify-between ">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-[#800080]">Not Here?</h1>
+          <div className="w-[300px]">
+            <Inputs type={"text"} placeholder={"Type what you do"} />
+          </div>
+        </div>
+
+        <div
+          onClick={() => handleProceed("form4")}
+          className="w-max px-12 py-2 bg-[#800080] cursor-pointer text-white rounded-md"
+        >
+          Next
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export const OnboardForm3 = () => {
-  return <div>Form 1</div>;
+export const OnboardForm4 = ({ handleProceed }) => {
+  const [active, setActive] = useState(null);
+  const navigate = useNavigate();
+  const data = [
+    {
+      title: "Visual",
+    },
+
+    {
+      title: "Auditory",
+    },
+
+    {
+      title: "Kinesthetic",
+    },
+  ];
+
+  const handleActive = (item) => {
+    setActive(item);
+  };
+
+  return (
+    <div className="w-full h-full flex flex-col gap-12 items-start">
+      <h1 className="font-bold text-2xl">
+        What are your preferred learning styles(e.g., Visual, auditory,
+        kinesthetic)?
+      </h1>
+
+      <div className="w-full flex items-start gap-4">
+        {data.map((item, index) => (
+          <div
+            onClick={() => handleActive(index)}
+            className="w-full h-[290px] loginBG"
+            key={item.title}
+          >
+            <Kyc
+              title={item.title}
+              selected={active === index ? true : false}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className=" w-full flex items-end justify-end ">
+        <div
+          onClick={() => navigate("/layout")}
+          className="w-max px-12 py-2 bg-primary cursor-pointer text-white rounded-md"
+        >
+          Continue
+        </div>
+      </div>
+    </div>
+  );
 };
