@@ -34,18 +34,18 @@ const Home = () => {
       </div>
 
       {/* RECOMMENDED SECTION*/}
-      <div className="w-full h-max py-5 flex flex-wrap px-12 gap-5">
+      <div className="w-full h-max py-5 flex flex-wrap  items-center justify-center px-12 gap-5">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
           <CourseCard />
         ))}
       </div>
 
-      <div className="w-full h-max py-5 bg-secondary fkex flex-col gap-5">
+      <div className="w-full h-max py-5 bg-secondary flex flex-col gap-5">
         <h1 className="text-3xl font-semibold px-12 my-16">
           <span className="bg-white p-1 rounded-md">Our Top rated </span>
           Instructors
         </h1>
-        <div className="w-full px-12 flex flex-wrap gap-5 pb-20">
+        <div className="w-full px-12 flex flex-wrap items-center justify-center gap-5 pb-20">
           {[1, 2, 3, 4].map((index) => (
             <TutorCard />
           ))}

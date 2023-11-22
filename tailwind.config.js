@@ -9,5 +9,9 @@ export default {
       },
     },
   },
+
+  fontFamily: {
+    PT: ["PT Sans", "sans-serif"],
+  },
   plugins: [],
 };
