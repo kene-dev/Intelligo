@@ -3,9 +3,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Auth from "./pages/AuthScreens/Auth";
 import Onboarding from "./pages/AuthScreens/Onboarding";
 import Layout from "./pages/MainScreens/Layout";
-import SingleCourse from "./pages/MainScreens/SIngleCourse";
 import Home from "./pages/MainScreens/Home";
 import Progress from "./pages/MainScreens/Progress";
+import SingleCourse from "./pages/MainScreens/SingleCourse";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
