@@ -9,9 +9,8 @@
     box-sizing: border-box;
     list-style: none;
     text-decoration: none;
+    font-family: "PT Sans" sans-serif;
 }
-
-
 
 .loginBG {
     background-image: url('./assets/loginImg.png');
@@ -32,4 +31,10 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+}
+
+.bord{
+    border-bottom: 3px solid #800080;
+    padding-bottom: 2px;
+    transition: all 200ms ease-in-out;
 }

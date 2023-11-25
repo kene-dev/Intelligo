@@ -2,6 +2,13 @@ import React, { useEffect, useState } from "react";
 import Inputs from "../../../components/Inputs";
 import { useNavigate } from "react-router-dom";
 import Kyc from "../../../components/Kyc";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loginUser,
+  registerUser,
+  resetAuth,
+} from "../../../Redux/features/AuthSlice";
+import { toast } from "react-toastify";
 
 // LOGIN FORM COMPONENT STARTS HERE
 export const LoginForm = () => {
@@ -11,7 +18,25 @@ export const LoginForm = () => {
     password: "",
   });
   const { email, password } = formData;
+  const { authLoading } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+    // console.log(registerForm)
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (email && password) {
+      const body = { email, password };
+      dispatch(loginUser(body));
+    }
+  };
 
   useEffect(() => {
     if (email && password) {
@@ -29,33 +54,33 @@ export const LoginForm = () => {
         <p className="text-black/50">Let's get you logged in</p>
       </div>
 
-      <form className="w-full flex flex-col gap-5">
+      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-5">
         <Inputs
           label={"E-mail"}
           type={"text"}
+          name={"email"}
           placeholder={"Enter your e-mail"}
           value={email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          onChange={handleChange}
         />
 
         <Inputs
           label={"Password"}
           type={"password"}
+          name={"password"}
           placeholder={"Type your password"}
           value={password}
-          onChange={(e) =>
-            setFormData({ ...formData, password: e.target.value })
-          }
+          onChange={handleChange}
         />
 
-        <div
-          onClick={() => navigate("onboard")}
+        <button
+          type="submit"
           className={` ${
             filled ? "bg-[#800080]" : "bg-[#80008092]"
           } w-full h-[45px] p-2 flex items-center justify-center cursor-pointer rounded-md text-white text-center`}
         >
-          Sign In
-        </div>
+          {authLoading ? "Loading..." : " Sign In"}
+        </button>
       </form>
     </div>
   );
@@ -71,34 +96,64 @@ export const RegisterForm = () => {
     password: "",
     confirmPassword: "",
   });
-
+  const dispatch = useDispatch();
+  const { authError, authLoading, authSuccess, authMessage } = useSelector(
+    (state) => state.auth
+  );
   const { email, password, firstName, lastName, confirmPassword } = formData;
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+    // console.log(registerForm)
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (email && password && firstName && lastName && confirmPassword) {
+      const body = { email, password, firstName, lastName };
+      dispatch(registerUser(body));
+    }
+  };
+
   useEffect(() => {
-    if (email && password) {
+    if (email && password && firstName && lastName && confirmPassword) {
       setFilled(true);
     } else {
       setFilled(false);
     }
-  }, [email, password]);
+  }, [email, password, firstName, lastName, confirmPassword]);
 
   return (
-    <div className="flex flex-col gap-9">
+    <div className="flex flex-col gap-8 h-full overflow-y-scroll pb-5">
       {/* WELCOME TEXT AREA */}
       <div className="flex flex-col gap-2 w-max p-2">
         <h1 className="text-xl font-bold">Welcome</h1>
         <p className="text-black/50">Create an Account</p>
       </div>
 
-      <form className="w-full flex flex-col gap-5">
+      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-5">
         <div>
-          <label className="text-sm">Full Name</label>
+          <label className="text-sm">First Name</label>
           <input
             type="text"
-            placeholder="Enter your fullname"
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
+            name="firstName"
+            placeholder="Enter your first Name"
+            value={firstName}
+            onChange={handleChange}
+            className="appearance-none border-[.5px] text-sm focus:outline-[#800080] focus:outline-[.3px] border-black/50 h-[45px] w-full p-2 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="text-sm">Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Enter your first Name"
+            onChange={handleChange}
+            value={lastName}
             className="appearance-none border-[.5px] text-sm focus:outline-[#800080] focus:outline-[.3px] border-black/50 h-[45px] w-full p-2 rounded-md"
           />
         </div>
@@ -107,10 +162,10 @@ export const RegisterForm = () => {
           <label className="text-sm">E-mail</label>
           <input
             type="text"
+            name="email"
             placeholder="Enter your e-mail"
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
+            value={email}
+            onChange={handleChange}
             className="appearance-none border-[.5px] text-sm focus:outline-[#800080] focus:outline-[.3px] border-black/50 h-[45px] w-full p-2 rounded-md"
           />
         </div>
@@ -119,10 +174,10 @@ export const RegisterForm = () => {
           <label className="text-sm">Password</label>
           <input
             type="password"
+            name="password"
             placeholder="Type your password"
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
+            value={password}
+            onChange={handleChange}
             className="appearance-none border-[.5px] text-sm focus:outline-[#800080] focus:outline-[.3px] border-black/50 h-[45px] w-full p-2 rounded-md"
           />
         </div>
@@ -131,21 +186,22 @@ export const RegisterForm = () => {
           <label className="text-sm">Confirm Password</label>
           <input
             type="password"
+            name="confirmPassword"
             placeholder="Re-Type your password"
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
+            onChange={handleChange}
+            value={confirmPassword}
             className="appearance-none border-[.5px] text-sm focus:outline-[#800080] focus:outline-[.3px] border-black/50 h-[45px] w-full p-2 rounded-md"
           />
         </div>
 
-        <div
+        <button
+          type="submit"
           className={` ${
             filled ? "bg-[#800080]" : "bg-[#80008092]"
           } w-full h-[45px] p-2 flex items-center justify-center rounded-md text-white text-center`}
         >
-          Sign Up
-        </div>
+          {authLoading ? "Loading..." : "Sign up"}
+        </button>
       </form>
     </div>
   );
@@ -392,7 +448,7 @@ export const OnboardForm4 = ({ handleProceed }) => {
 
       <div className=" w-full flex items-end justify-end ">
         <div
-          onClick={() => navigate("/layout")}
+          onClick={() => navigate("/layout/home")}
           className="w-max px-12 py-2 bg-primary cursor-pointer text-white rounded-md"
         >
           Continue

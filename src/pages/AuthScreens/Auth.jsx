@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Colors } from "../../Utils/Colors";
 import { LoginForm, RegisterForm } from "./components";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { resetAuth } from "../../Redux/features/AuthSlice";
 
 const Auth = () => {
   const [display, setDisplay] = useState("login");
+  const { authError, authSuccess, authRegisterSuccess, authMessage } =
+    useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Function to handle view changes
   const handleViewChange = (newView) => {
@@ -21,6 +29,30 @@ const Auth = () => {
         return <LoginForm />;
     }
   };
+
+  useEffect(() => {
+    if (authError) {
+      toast.error(authMessage);
+      setTimeout(() => {
+        dispatch(resetAuth());
+      }, 1500);
+    }
+
+    if (authRegisterSuccess) {
+      toast.success(authMessage);
+      setDisplay("login");
+      setTimeout(() => {
+        dispatch(resetAuth());
+      }, 1500);
+    }
+
+    if (authSuccess) {
+      navigate("/layout/home");
+      setTimeout(() => {
+        dispatch(resetAuth());
+      }, 1500);
+    }
+  }, [authError, authSuccess, authRegisterSuccess]);
 
   return (
     <div className=" w-full h-screen lg:flex items-start">

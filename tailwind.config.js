@@ -7,11 +7,12 @@ export default {
         primary: "#800080",
         secondary: "#CEA5CE",
       },
+
+      fontFamily: {
+        pt: ["PT Sans", "sans-serif"],
+      },
     },
   },
 
-  fontFamily: {
-    PT: ["PT Sans", "sans-serif"],
-  },
   plugins: [],
 };

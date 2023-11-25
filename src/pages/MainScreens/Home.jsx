@@ -1,11 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import homeB from "../../assets/homeBanner.png";
 import news from "../../assets/newletter.png";
 import CourseCard from "../../components/CourseCard";
 import TutorCard from "../../components/TutorCard";
 import BlogCard from "../../components/BlogCard";
+import { useDispatch, useSelector } from "react-redux";
+import { getCourses, resetCourses } from "../../Redux/features/CoursesSlice";
 
 const Home = () => {
+  const { allCourses, allCoursesSuccess, allCoursesError } = useSelector(
+    (state) => state.courses
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCourses());
+  }, []);
+
+  useEffect(() => {
+    if (allCoursesSuccess) {
+      setTimeout(() => {
+        dispatch(resetCourses());
+      }, 1000);
+    }
+
+    if (allCoursesError) {
+      setTimeout(() => {
+        dispatch(resetCourses());
+      }, 1500);
+    }
+  }, [allCoursesSuccess, allCoursesError]);
   return (
     <div className="w-full h-full flex flex-col gap-14">
       {/* BANNER SECTION */}
@@ -34,10 +57,20 @@ const Home = () => {
       </div>
 
       {/* RECOMMENDED SECTION*/}
-      <div className="w-full h-max py-5 flex flex-wrap  items-center justify-center px-12 gap-5">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
-          <CourseCard />
-        ))}
+      <div className="max-w-[2200px] h-max py-5 flex flex-wrap  items-center justify-center xl:justify-start px-12 lg:gap-5">
+        {allCourses ? (
+          allCourses.map((item, index) => (
+            <CourseCard
+              key={item._id}
+              id={item._id}
+              time={item.duration}
+              tutor={item.tutor}
+              name={item.name}
+            />
+          ))
+        ) : (
+          <p>No courses Found</p>
+        )}
       </div>
 
       <div className="w-full h-max py-5 bg-secondary flex flex-col gap-5">
