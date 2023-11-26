@@ -6,11 +6,16 @@ const BASE_URL = "https://puzzled-necklace-fawn.cyclic.app/api/v1";
 
 const initialState = {
   user: null,
+  userDetails: null,
   authRegisterSuccess: false,
   authLoading: false,
   authSuccess: false,
   authError: false,
   authMessage: "",
+
+  userDeetsLoading: false,
+  userDeetsSuccess: false,
+  userDeetsError: false,
 };
 
 export const registerUser = createAsyncThunk(
@@ -73,6 +78,40 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const getUserDetails = createAsyncThunk(
+  "auth/userDeets",
+  async (thunkAPI) => {
+    const id = localStorage.getItem("uid");
+    const token = localStorage.getItem("token");
+    // console.log("USER ID: " + id);
+    try {
+      const response = await axios.get(BASE_URL + `/user/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response) {
+        const obj = error.response.data;
+        const objKey = Object.keys(obj)[0];
+        let err = obj[objKey];
+        console.log(err);
+        return thunkAPI.rejectWithValue(err);
+      } else if (error.request) {
+        return thunkAPI.rejectWithValue("something went terribly wrong");
+      } else {
+        const obj = error.response.data;
+        const objKey = Object.keys(obj)[0];
+        let err = obj[objKey];
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "authSlice",
   initialState,
@@ -83,6 +122,12 @@ const authSlice = createSlice({
       state.authLoading = false;
       state.authMessage = false;
       state.authRegisterSuccess = false;
+    },
+
+    resetUserDeets: (state) => {
+      (state.userDeetsLoading = false),
+        (state.userDeetsSuccess = false),
+        (state.userDeetsError = false);
     },
 
     logoutUser: (state) => {
@@ -122,9 +167,26 @@ const authSlice = createSlice({
         state.authSuccess = false;
         state.authError = true;
         state.authMessage = action.payload;
+      })
+
+      // USER DETAILS HANDLER
+      .addCase(getUserDetails.pending, (state) => {
+        state.userDeetsLoading = true;
+      })
+      .addCase(getUserDetails.fulfilled, (state, action) => {
+        state.userDeetsLoading = false;
+        state.userDeetsSuccess = true;
+        state.userDeetsError = false;
+        state.userDetails = action.payload;
+      })
+      .addCase(getUserDetails.rejected, (state, action) => {
+        state.userDeetsLoading = false;
+        state.userDeetsSuccess = false;
+        state.userDeetsError = true;
+        state.authMessage = action.payload;
       });
   },
 });
 
-export const { resetAuth, logoutUser } = authSlice.actions;
+export const { resetAuth, logoutUser, resetUserDeets } = authSlice.actions;
 export default authSlice.reducer;

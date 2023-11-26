@@ -6,14 +6,29 @@ import TutorCard from "../../components/TutorCard";
 import BlogCard from "../../components/BlogCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getCourses, resetCourses } from "../../Redux/features/CoursesSlice";
+import { getUserDetails, resetUserDeets } from "../../Redux/features/AuthSlice";
+import { toast } from "react-toastify";
+import {
+  getStreamToken,
+  resetGCToken,
+} from "../../Redux/features/GetChatToken";
 
 const Home = () => {
   const { allCourses, allCoursesSuccess, allCoursesError } = useSelector(
     (state) => state.courses
   );
+  const { userDetails, userDeetsSuccess, userDeetsError, authMessage } =
+    useSelector((state) => state.auth);
+  const { gcTokenSuccess, gcTokenError, gcTokenMessage } = useSelector(
+    (state) => state.gcToks
+  );
+
   const dispatch = useDispatch();
+
   useEffect(() => {
+    dispatch(getUserDetails());
     dispatch(getCourses());
+    dispatch(getStreamToken());
   }, []);
 
   useEffect(() => {
@@ -28,14 +43,49 @@ const Home = () => {
         dispatch(resetCourses());
       }, 1500);
     }
-  }, [allCoursesSuccess, allCoursesError]);
+
+    if (userDeetsSuccess) {
+      setTimeout(() => {
+        dispatch(resetUserDeets());
+      }, 1500);
+    }
+    if (userDeetsError) {
+      toast.error(authMessage);
+      setTimeout(() => {
+        dispatch(resetCourses());
+      }, 1500);
+    }
+
+    if (gcTokenSuccess) {
+      setTimeout(() => {
+        dispatch(resetGCToken());
+      }, 1500);
+    }
+    if (gcTokenError) {
+      toast.error(gcTokenMessage);
+      setTimeout(() => {
+        dispatch(resetGCToken());
+      }, 1500);
+    }
+  }, [
+    allCoursesSuccess,
+    allCoursesError,
+    gcTokenSuccess,
+    gcTokenError,
+    userDeetsSuccess,
+    userDeetsError,
+    authMessage,
+  ]);
   return (
     <div className="w-full h-full flex flex-col gap-14">
       {/* BANNER SECTION */}
       <div className=" mt-16 px-12">
         <div className="w-full h-[200px] heroBG flex items-center justify-between rounded-md">
           <div className="w-full flex flex-col gap-4 items-start px-16">
-            <h1 className="font-bold text-5xl text-black">Hi, Emmanuel</h1>
+            <h1 className="font-bold text-5xl text-black">
+              Hi,{" "}
+              {userDetails ? userDetails?.userData?.data?.firstName : "Scholar"}
+            </h1>
             <p className="text-black/70 text-xl">
               Ready to start your day with some learning?
             </p>

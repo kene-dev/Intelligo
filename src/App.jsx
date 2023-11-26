@@ -8,13 +8,16 @@ import Progress from "./pages/MainScreens/Progress";
 import SingleCourse from "./pages/MainScreens/SingleCourse";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LandingPage from "./pages/LandingPage";
+import StudyGroup from "./pages/MainScreens/StudyGroup";
 
 function App() {
   return (
     <>
       <ToastContainer position="top-center" hideProgressBar />
       <Routes>
-        <Route path="/" element={<Auth />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="auth" element={<Auth />} />
         <Route path="onboard" element={<Onboarding />} />
 
         <Route exact path="layout" element={<Layout />}>
@@ -26,6 +29,7 @@ function App() {
             <Route index element={<Progress />} />
           </Route>
           <Route path="singlecourse/:id" element={<SingleCourse />} />
+          <Route path="groups" element={<StudyGroup />} />
         </Route>
       </Routes>
     </>

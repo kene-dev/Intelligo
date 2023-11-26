@@ -13,11 +13,13 @@ import storage from "redux-persist/lib/storage";
 import IQformReducer from "../Redux/features/IQformSlice";
 import authSliceReducer from "../Redux/features/AuthSlice";
 import coursesReducer from "../Redux/features/CoursesSlice";
+import gcTokenReducer from "../Redux/features/GetChatToken";
 
 const reducers = combineReducers({
   formstore: IQformReducer,
   auth: authSliceReducer,
   courses: coursesReducer,
+  gcToks: gcTokenReducer,
 });
 
 const persistConfig = {
