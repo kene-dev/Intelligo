@@ -1,12 +1,17 @@
 import React from "react";
 import arrow from "../assets/forward.svg";
+import star from "../assets/star.svg";
+import pic1 from "../assets/pic1.svg";
+import pic2 from "../assets/pic2.svg";
+import pic3 from "../assets/pic3.svg";
+import pic4 from "../assets/pic4.svg";
 import landingBG from "../assets/landingBG.png";
 import { Link } from "react-scroll";
 import Navmenu from "../components/Navmenu";
 
 const LandingPage = () => {
   return (
-    <div>
+    <div className="font-pt">
       <Navmenu />
       <div
         id="about"
@@ -47,6 +52,77 @@ const LandingPage = () => {
           <div className=" w-full h-[600px]">
             <img src={landingBG} className="w-full h-full object-contain " />
           </div>
+        </div>
+      </div>
+
+      <div className="py-5 px-4 w-full flex items-center justify-center my-28">
+        <div className="flex justify-between  w-[70%] items-center">
+          <div className="text-black text-sm w-full px-4">
+            <p className="text-xl">
+              Trusted by over
+              <span className="text-primary font-semibold"> 12k Users </span>
+            </p>
+            <p className="text-xl">
+              worldwide since
+              <span className="text-primary font-semibold"> 2022</span>
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between w-full gap-6 h-[166px] bg-[#F4F4F4] px-7 rounded-xl">
+            <div className="flex flex-col gap-3 items-start">
+              <div className="text-black font-bold text-xl mr-2">5.0</div>
+              <div className="flex items-center justify-center gap-1">
+                {[1, 2, 3, 4, 5].map((index) => (
+                  <img key={index} src={star} className="w-[15px] h-[15px]" />
+                ))}
+              </div>
+              <div className="text-gray-600 text-sm">20,000+ courses taken</div>
+            </div>
+
+            <div className="text-black text-sm flex flex-col items-center">
+              <p className="text-4xl font-semibold  ">200+</p>{" "}
+              <span className="text-xs">tutors</span>
+            </div>
+
+            <div className="text-black text-sm flex flex-col items-center">
+              <p className="text-4xl font-semibold  ">300+</p>{" "}
+              <span className="text-xs">Courses</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="why" className="w-full h-[458px] px-12 flex items-center my-10">
+        <div className="w-[30%]">
+          <h1 className="text-5xl font-semibold">Why</h1>
+          <h1 className="text-5xl font-semibold">Choose</h1>
+          <h1 className="text-primary text-5xl font-semibold">Us</h1>
+        </div>
+
+        <div className="w-full h-full flex items-start justify-end gap-6">
+          <div className="w-[159px] h-full">
+            <img src={pic1} className=" w-full h-full object-cover" />
+          </div>
+          <div className="w-[159px] h-full">
+            <img src={pic2} className=" w-full h-full object-cover" />
+          </div>
+          <div className="w-[159px] h-full">
+            <img src={pic3} className=" w-full h-full object-cover" />
+          </div>
+          <div className="w-[341px] h-full">
+            <img src={pic4} className=" w-full h-full object-cover" />
+          </div>
+        </div>
+      </div>
+
+      <div id="contact" className="w-full px-12 h-full mt-28">
+        <h1 className="text-center text-5xl font-semibold ">
+          Contact <span className="text-primary">Us</span>
+        </h1>
+
+        <div className="h-[581px] w-full flex items-start mt-28">
+          <div className="w-full h-full rounded-l-md bg-[#F4F4F4]"></div>
+          <div className="w-[608px] h-full rounded-r-md bg-primary"></div>
         </div>
       </div>
     </div>

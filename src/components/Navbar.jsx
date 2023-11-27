@@ -11,7 +11,7 @@ const Navbar = () => {
   return (
     <div className="w-full h-[100px] p-3 flex items-center justify-between bg-white px-12">
       <img src={logo} className="bg-contain  w-[120px]" />
-      <SearchBar placeholder={"Search Courses, teachers..."} />
+      <SearchBar placeholder={"Search Courses, teachers..."} width={"423px"} />
 
       <div className="flex items-center gap-10">
         <div className="w-max px-6 py-3 text-sm bg-primary cursor-pointer text-white rounded-md">

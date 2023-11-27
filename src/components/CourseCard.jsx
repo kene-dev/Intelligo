@@ -10,12 +10,7 @@ import { useNavigate } from "react-router-dom";
 const CourseCard = ({ id, name, tutor, time }) => {
   const navigate = useNavigate();
   return (
-    <div
-      onClick={() => {
-        navigate(`/layout/singleCourse/${id}`);
-      }}
-      className="w-[319px] h-[434px] flex flex-col rounded-md cursor-pointer"
-    >
+    <div className="w-[319px] h-[434px] flex flex-col rounded-md cursor-pointer">
       {/* IMAGE AREA */}
       <div className="w-full h-[300px] rounded-t-md overflow-hidden relative">
         <img src={course} className="w-full h-full object-cover" />

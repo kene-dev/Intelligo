@@ -14,12 +14,16 @@ import IQformReducer from "../Redux/features/IQformSlice";
 import authSliceReducer from "../Redux/features/AuthSlice";
 import coursesReducer from "../Redux/features/CoursesSlice";
 import gcTokenReducer from "../Redux/features/GetChatToken";
+import beginCourseReducer from "../Redux/features/BeginCourseSlice";
+import joinBoothReducer from "../Redux/features/JoinBoothSlice";
 
 const reducers = combineReducers({
   formstore: IQformReducer,
   auth: authSliceReducer,
   courses: coursesReducer,
   gcToks: gcTokenReducer,
+  beginCourse: beginCourseReducer,
+  joinBooth: joinBoothReducer,
 });
 
 const persistConfig = {

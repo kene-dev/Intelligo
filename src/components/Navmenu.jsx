@@ -52,7 +52,7 @@ const Navmenu = () => {
             About Us
           </Link>
           <Link
-            to="we"
+            to="why"
             spy={true}
             smooth={true}
             offset={-100}
@@ -62,7 +62,7 @@ const Navmenu = () => {
             Why Choose Us
           </Link>
           <Link
-            to="solutions"
+            to="contact"
             spy={true}
             smooth={true}
             offset={-100}
@@ -117,7 +117,7 @@ const Navmenu = () => {
             About Us
           </Link>
           <Link
-            to="we"
+            to="why"
             onClick={handleNav}
             spy={true}
             smooth={true}
@@ -128,7 +128,7 @@ const Navmenu = () => {
             Why Choose Us
           </Link>
           <Link
-            to="solutions"
+            to="contact"
             onClick={handleNav}
             spy={true}
             smooth={true}

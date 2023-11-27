@@ -19,6 +19,7 @@ const initialState = {
 
   IQformLoading: false,
   IQformSuccess: false,
+  IQScoringSuccess: false,
   IQformError: false,
   IQformMessage: "",
 };
@@ -114,7 +115,7 @@ const IQformSlice = createSlice({
     resetIQform: (state) => {
       state.IQformError = false;
       state.IQformSuccess = false;
-      state.IQformLoading = false;
+      (state.IQScoringSuccess = false), (state.IQformLoading = false);
       state.IQformMessage = false;
     },
   },
@@ -143,7 +144,7 @@ const IQformSlice = createSlice({
         state.IQformLoading = false;
         state.IQformSuccess = true;
         state.IQformError = false;
-        state.IQformMessage = action.payload;
+        state.IQScoringSuccess = action.payload;
       })
       .addCase(submitScoring.rejected, (state, action) => {
         state.IQformLoading = false;

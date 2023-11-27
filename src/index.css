@@ -38,3 +38,12 @@
     padding-bottom: 2px;
     transition: all 200ms ease-in-out;
 }
+
+.full-height-minus-170 {
+    height: calc(100vh - 200px);
+}
+
+.str-chat {
+    --str-chat__primary-color: #800080;
+    --str-chat__avatar-background-color:var(--str-chat__primary-color)
+}

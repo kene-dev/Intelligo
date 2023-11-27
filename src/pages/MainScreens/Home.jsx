@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import homeB from "../../assets/homeBanner.png";
 import news from "../../assets/newletter.png";
 import CourseCard from "../../components/CourseCard";
@@ -12,6 +12,7 @@ import {
   getStreamToken,
   resetGCToken,
 } from "../../Redux/features/GetChatToken";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { allCourses, allCoursesSuccess, allCoursesError } = useSelector(
@@ -23,7 +24,23 @@ const Home = () => {
     (state) => state.gcToks
   );
 
+  const [cInfo, setCinfo] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  function doesArrayIncludeString(arrayOfStrings, stringToCheck) {
+    return arrayOfStrings.includes(stringToCheck);
+  }
+
+  const handleCourseCard = (id) => {
+    if (cInfo === undefined) {
+      navigate(`/layout/courseEnrol/${id}`);
+    } else {
+      doesArrayIncludeString(cInfo, id)
+        ? navigate(`/layout/singleCourse/${id}`)
+        : navigate(`/layout/courseEnrol/${id}`);
+    }
+  };
 
   useEffect(() => {
     dispatch(getUserDetails());
@@ -45,14 +62,20 @@ const Home = () => {
     }
 
     if (userDeetsSuccess) {
+      if (!userDetails?.userData?.courseInfo?.length) {
+        return;
+      } else {
+        setCinfo(userDetails?.userData?.courseInfo);
+      }
       setTimeout(() => {
         dispatch(resetUserDeets());
       }, 1500);
     }
+
     if (userDeetsError) {
       toast.error(authMessage);
       setTimeout(() => {
-        dispatch(resetCourses());
+        dispatch(resetUserDeets());
       }, 1500);
     }
 
@@ -83,7 +106,7 @@ const Home = () => {
         <div className="w-full h-[200px] heroBG flex items-center justify-between rounded-md">
           <div className="w-full flex flex-col gap-4 items-start px-16">
             <h1 className="font-bold text-5xl text-black">
-              Hi,{" "}
+              Hi,
               {userDetails ? userDetails?.userData?.data?.firstName : "Scholar"}
             </h1>
             <p className="text-black/70 text-xl">
@@ -110,13 +133,18 @@ const Home = () => {
       <div className="max-w-[2200px] h-max py-5 flex flex-wrap  items-center justify-center xl:justify-start px-12 lg:gap-5">
         {allCourses ? (
           allCourses.map((item, index) => (
-            <CourseCard
+            <div
               key={item._id}
-              id={item._id}
-              time={item.duration}
-              tutor={item.tutor}
-              name={item.name}
-            />
+              onClick={() => handleCourseCard(item._id)}
+              className=""
+            >
+              <CourseCard
+                id={item._id}
+                time={item.duration}
+                tutor={item.tutor}
+                name={item.name}
+              />
+            </div>
           ))
         ) : (
           <p>No courses Found</p>

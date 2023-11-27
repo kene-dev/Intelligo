@@ -3,6 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Tabs from "../../components/Tabs";
 import { useSelector } from "react-redux";
+import Footer from "../../components/Footer";
 
 const Layout = () => {
   const { user } = useSelector((state) => state.auth);
@@ -13,6 +14,7 @@ const Layout = () => {
           <Navbar />
           <Tabs />
           <Outlet />
+          <Footer />
         </div>
       ) : (
         <Navigate to="/" />

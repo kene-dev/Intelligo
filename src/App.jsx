@@ -10,6 +10,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LandingPage from "./pages/LandingPage";
 import StudyGroup from "./pages/MainScreens/StudyGroup";
+import CourseEnrol from "./pages/MainScreens/CourseEnrol";
+import "stream-chat-react/dist/css/v2/index.css";
 
 function App() {
   return (
@@ -28,7 +30,9 @@ function App() {
           <Route path="progress">
             <Route index element={<Progress />} />
           </Route>
+
           <Route path="singlecourse/:id" element={<SingleCourse />} />
+          <Route path="courseEnrol/:id" element={<CourseEnrol />} />
           <Route path="groups" element={<StudyGroup />} />
         </Route>
       </Routes>

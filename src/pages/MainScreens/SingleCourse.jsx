@@ -5,23 +5,35 @@ import video from "../../assets/videoFeed.png";
 import tut from "../../assets/tutorImg.png";
 import BoothEnrol from "../../components/BoothEnrol";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { getSingleCourse } from "../../Redux/features/CoursesSlice";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import CourseModules from "../../components/CourseModules";
+import CourseBooth from "../../components/CourseBooth";
+import { resetJoinBooth } from "../../Redux/features/JoinBoothSlice";
 
 const SingleCourse = () => {
   const [active, setActive] = useState("overview");
   const { singleCourse, allCoursesLoading } = useSelector(
     (state) => state.courses
   );
+
+  const {
+    joinBoothLoading,
+    joinBoothSuccess,
+    joinBoothError,
+    joinBoothMessage,
+  } = useSelector((state) => state.joinBooth);
+
   const [videos, setVideos] = useState(
     singleCourse ? singleCourse.modules[0].videoLink : null
   );
   const params = useParams();
   const dispatch = useDispatch();
   const playerRef = useRef(null);
+  const location = useLocation();
+  const [currentGroup, setCurrentGroup] = useState(null);
 
   const opts = {
     height: "624",
@@ -33,6 +45,7 @@ const SingleCourse = () => {
   };
 
   useEffect(() => {
+    setCurrentGroup(null);
     dispatch(getSingleCourse(params.id));
     const handleBeforeUnload = async () => {
       const currentTime = await playerRef.current.getCurrentTime();
@@ -50,6 +63,71 @@ const SingleCourse = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (joinBoothSuccess) {
+      setCurrentGroup(joinBoothMessage.groupId);
+      toast.success(joinBoothMessage.message);
+      setTimeout(() => {
+        dispatch(resetJoinBooth());
+      }, 1500);
+    }
+    if (joinBoothError) {
+      toast.error(joinBoothMessage);
+      setTimeout(() => {
+        dispatch(resetJoinBooth());
+      }, 1500);
+    }
+  }, [joinBoothSuccess, joinBoothError]);
+
+  const renderTabContent = () => {
+    switch (active) {
+      case "overview":
+        return (
+          <div className="w-full h-[500px] flex items-start gap-5">
+            <p
+              style={{ whiteSpace: "break-spaces" }}
+              className="w-full xl:w-[80%] text-black/50"
+            >
+              {singleCourse ? singleCourse.overview : "Video Description"}
+            </p>
+
+            <div className="w-[512px] h-[350px] flex flex-col gap-6 bg-secondary/20 rounded-md p-7">
+              <h1 className="font-bold font-pt text-xl">About Instructor</h1>
+              <div className="flex items-center gap-8">
+                <img
+                  src={tut}
+                  className="w-14 h-14 object-contain rounded-full"
+                />
+                <div className="flex flex-col gap-2">
+                  <h1 className="font-semibold font-pt text-base">
+                    {singleCourse ? singleCourse.tutor : "Tutor"}
+                  </h1>
+                  <p className="font-thin font-pt text-xs">Instructor</p>
+                </div>
+              </div>
+
+              <p className="w-full text-black/50 text-sm">
+                adipisicing elit. Incidunt fugiat maxime blanditiis inventore
+                corrupti placeat ad voluptate nemo vitae in, pariatur a libero
+                alias architecto. Ipsa consequatur enim modi dicta. Non ipsum
+                sunt doloremque dolor ab omnis autem? Suscipit ratione ad
+                officia perferendis pariatur aliquam corporis architecto at
+                quisquam neque.
+              </p>
+            </div>
+          </div>
+        );
+      case "booth":
+        return (
+          <div className="w-full h-[500px]">
+            <CourseBooth groupId={currentGroup} course_id={params.id} />
+          </div>
+        );
+      default:
+        return <p>Page not found</p>;
+    }
+  };
+
   const onPause = (event) => {
     const currentTime = playerRef.current.getCurrentTime();
     const videoDuration = playerRef.current.getDuration();
@@ -58,13 +136,9 @@ const SingleCourse = () => {
     // You can now use the `currentTime` value as needed
   };
 
-  // useEffect(() => {
-
-  // }, []);
-
   if (allCoursesLoading) {
     return (
-      <div className="w-full h-full flex justify-center items-center">
+      <div className="w-full min-h-full flex justify-center items-center">
         <h1 className="text-3xl font-pt font-bold h-full">
           Fetching Course Data...
         </h1>
@@ -135,43 +209,8 @@ const SingleCourse = () => {
             </p>
           </div>
 
-          {active === "overview" ? (
-            <div className="w-full h-[500px] flex items-start gap-5">
-              <p
-                style={{ whiteSpace: "break-spaces" }}
-                className="w-full xl:w-[80%] text-black/50"
-              >
-                {singleCourse ? singleCourse.overview : "Video Description"}
-              </p>
-
-              <div className="w-[512px] h-[350px] flex flex-col gap-6 bg-secondary/20 rounded-md p-7">
-                <h1 className="font-bold font-pt text-xl">About Instructor</h1>
-                <div className="flex items-center gap-8">
-                  <img
-                    src={tut}
-                    className="w-14 h-14 object-contain rounded-full"
-                  />
-                  <div className="flex flex-col gap-2">
-                    <h1 className="font-semibold font-pt text-base">
-                      {singleCourse ? singleCourse.tutor : "Tutor"}
-                    </h1>
-                    <p className="font-thin font-pt text-xs">Instructor</p>
-                  </div>
-                </div>
-
-                <p className="w-full text-black/50 text-sm">
-                  adipisicing elit. Incidunt fugiat maxime blanditiis inventore
-                  corrupti placeat ad voluptate nemo vitae in, pariatur a libero
-                  alias architecto. Ipsa consequatur enim modi dicta. Non ipsum
-                  sunt doloremque dolor ab omnis autem? Suscipit ratione ad
-                  officia perferendis pariatur aliquam corporis architecto at
-                  quisquam neque.
-                </p>
-              </div>
-            </div>
-          ) : (
-            <BoothEnrol />
-          )}
+          {renderTabContent()}
+          {/* <BoothEnrol /> */}
         </div>
         {/* VIDEO DESCRIPTIONSECTION */}
       </div>

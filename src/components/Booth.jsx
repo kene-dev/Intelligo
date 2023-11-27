@@ -11,10 +11,10 @@ import {
   Window,
   ChannelList,
 } from "stream-chat-react";
-import "stream-chat-react/dist/css/index.css";
 
-const Booth = () => {
+const Booth = ({ channelName }) => {
   const [client, setClient] = useState(null);
+  const [channel, setChannel] = useState(null);
   const { userDetails } = useSelector((state) => state.auth);
   const { gcToken } = useSelector((state) => state.gcToks);
 
@@ -26,20 +26,31 @@ const Booth = () => {
         // Connect a user
         const userToken = gcToken.token;
         const userId = userDetails.userData._id;
-
-        const name = userDetails.userData.data.firstName;
-        chatClient.connectUser({ id: userId, name: name }, userToken);
         setClient(chatClient);
+
+        if (channelName) {
+          // Connect to specific channel
+          const specificChannel = chatClient.channel("messaging", channelName);
+          await specificChannel.watch();
+          setChannel(specificChannel);
+          console.log(specificChannel);
+        } else {
+          const name = userDetails.userData.data.firstName;
+          chatClient.connectUser({ id: userId, name: name }, userToken);
+        }
       } catch (error) {
         console.error("Error initializing chat:", error);
       }
     };
-
     initChat();
 
     // Disconnect the user when the component unmounts
     if (client) return () => client.disconnectUser();
   }, []);
+
+  useEffect(() => {
+    console.log("Client state" + client);
+  }, [client]);
 
   const filter = { members: { $in: [userDetails.userData._id] } };
   const sort = { last_message_at: -1 };
@@ -49,17 +60,38 @@ const Booth = () => {
   }
 
   return (
-    <Chat client={client}>
-      <ChannelList filters={filter} sort={sort} />
-      <Channel>
-        <Window>
-          <ChannelHeader />
-          <MessageList />
-          <MessageInput />
-        </Window>
-        <Thread />
-      </Channel>
-    </Chat>
+    <div className="w-full h-full flex gap-7">
+      {channel ? (
+        <Chat client={client}>
+          <div className="w-full">
+            <Channel channel={channel}>
+              <Window>
+                <ChannelHeader />
+                <MessageList />
+                <MessageInput />
+              </Window>
+              <Thread />
+            </Channel>
+          </div>
+        </Chat>
+      ) : (
+        <Chat client={client}>
+          <div className="w-[400px]">
+            <ChannelList filters={filter} sort={sort} />
+          </div>
+          <div className="w-full">
+            <Channel>
+              <Window>
+                <ChannelHeader />
+                <MessageList />
+                <MessageInput />
+              </Window>
+              <Thread />
+            </Channel>
+          </div>
+        </Chat>
+      )}
+    </div>
   );
 };
 

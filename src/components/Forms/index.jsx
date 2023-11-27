@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateFormData } from "../../Redux/features/IQformSlice";
+import {
+  resetIQform,
+  resetIQformInput,
+  submitScoring,
+  updateFormData,
+} from "../../Redux/features/IQformSlice";
 import { toast } from "react-toastify";
 
 export const Form1 = ({ handleCurrent }) => {
@@ -199,9 +204,22 @@ export const Form2 = ({ handleCurrent }) => {
 };
 
 export const Form3 = ({ handleCurrent }) => {
-  const { formQuestion, question_7, question_8, question_9 } = useSelector(
-    (state) => state.formstore
-  );
+  const {
+    formQuestion,
+    IQformLoading,
+    IQformSuccess,
+    IQformError,
+    IQformMessage,
+    question_1,
+    question_2,
+    question_3,
+    question_4,
+    question_5,
+    question_6,
+    question_7,
+    question_8,
+    question_9,
+  } = useSelector((state) => state.formstore);
   const dispatch = useDispatch();
 
   const handleChange = (value, name) => {
@@ -210,11 +228,40 @@ export const Form3 = ({ handleCurrent }) => {
 
   const handleProceed = () => {
     if (question_7 && question_8 && question_9) {
-      console.log("completed!!!");
+      const body = {
+        question_1,
+        question_2,
+        question_3,
+        question_4,
+        question_5,
+        question_6,
+        question_7,
+        question_8,
+        question_9,
+      };
+      dispatch(submitScoring(body));
+      //   console.log("completed!!!" + JSON.stringify(body));
     } else {
       toast.error("please fill all required fields");
     }
   };
+
+  useEffect(() => {
+    if (IQformSuccess) {
+      toast.success("You're all set! Scoring saved successfully!");
+      setTimeout(() => {
+        dispatch(resetIQform());
+        dispatch(resetIQformInput());
+      }, 1500);
+    }
+    if (IQformError) {
+      toast.error(IQformMessage);
+      setTimeout(() => {
+        dispatch(resetIQform());
+        dispatch(resetIQformInput());
+      }, 1500);
+    }
+  }, [IQformSuccess, IQformError]);
   return (
     <div className="w-full h-full flex flex-col items-start gap-7 mt-6">
       {/* FIRST QUESTION */}
@@ -279,7 +326,7 @@ export const Form3 = ({ handleCurrent }) => {
 
       <div className="w-full flex items-center gap-5 justify-end">
         <button
-          onClick={() => setCurrent("anim2")}
+          onClick={() => handleCurrent("anim2")}
           className="w-max h-[30px] flex items-center justify-center px-4 cursor-pointer p-2 border-2 border-primary bg-transparent  rounded-md"
         >
           Prev
@@ -288,7 +335,7 @@ export const Form3 = ({ handleCurrent }) => {
           onClick={handleProceed}
           className="w-max h-[30px] flex items-center justify-center text-white px-4 cursor-pointer p-2 bg-primary rounded-md"
         >
-          Finish
+          {IQformLoading ? "Loading..." : "Finish"}
         </button>
       </div>
     </div>
