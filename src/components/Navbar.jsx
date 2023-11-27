@@ -3,10 +3,12 @@ import logo from "../assets/logo.svg";
 import bell from "../assets/notifiy.svg";
 import SearchBar from "./SearchBar";
 import drop from "../assets/drop.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../Redux/features/AuthSlice";
 
 const Navbar = () => {
+  const { userDetails, userDeetsSuccess, userDeetsError, authMessage } =
+    useSelector((state) => state.auth);
   const dispatch = useDispatch();
   return (
     <div className="w-full h-[100px] p-3 flex items-center justify-between bg-white px-12">
@@ -26,7 +28,11 @@ const Navbar = () => {
           onClick={() => dispatch(logoutUser())}
           className="w-max flex items-center gap-4 text-sm px-5 py-3 bg-[#f5f5f5] cursor-pointer text-black rounded-md"
         >
-          <p>Umoru Emmanuel</p>
+          <p>
+            {userDetails?.userData?.data?.firstName +
+              " " +
+              userDetails?.userData?.data?.lastName}
+          </p>
           <img src={drop} className="w-[13px] h-[13px]" />
         </div>
       </div>

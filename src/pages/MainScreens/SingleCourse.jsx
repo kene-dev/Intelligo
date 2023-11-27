@@ -138,7 +138,7 @@ const SingleCourse = () => {
 
   if (allCoursesLoading) {
     return (
-      <div className="w-full min-h-full flex justify-center items-center">
+      <div className="w-full min-h-screen flex justify-center items-center">
         <h1 className="text-3xl font-pt font-bold h-full">
           Fetching Course Data...
         </h1>

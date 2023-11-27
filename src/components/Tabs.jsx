@@ -54,14 +54,14 @@ const Tabs = () => {
       >
         Study Groups
       </li>
-      <li
+      {/* <li
         onClick={() => handleActive("calender")}
         className={`text-sm hover:border-b-2 ${
           active === "calender" ? "text-primary" : "text-black"
         } hover:border-secondary border-b-2 border-transparent p-2 text-black font-semibold duration-200 cursor-pointer`}
       >
         My Calendar
-      </li>
+      </li> */}
     </ul>
   );
 };

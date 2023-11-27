@@ -8,6 +8,7 @@ import pic4 from "../assets/pic4.svg";
 import landingBG from "../assets/landingBG.png";
 import { Link } from "react-scroll";
 import Navmenu from "../components/Navmenu";
+import Inputs from "../components/Inputs";
 
 const LandingPage = () => {
   return (
@@ -115,14 +116,58 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div id="contact" className="w-full px-12 h-full mt-28">
+      <div id="contact" className="w-full px-12 h-full mt-28 mb-20">
         <h1 className="text-center text-5xl font-semibold ">
           Contact <span className="text-primary">Us</span>
         </h1>
 
-        <div className="h-[581px] w-full flex items-start mt-28">
-          <div className="w-full h-full rounded-l-md bg-[#F4F4F4]"></div>
-          <div className="w-[608px] h-full rounded-r-md bg-primary"></div>
+        <div className="h-[591px] w-full flex items-start mt-28 font-pt">
+          <div className="w-full h-full flex flex-col gap-5 rounded-l-md bg-[#F4F4F4] p-12">
+            <h1 className="font-bold text-2xl my-5 text-center">
+              Write a Message
+            </h1>
+            <div className="w-full flex items-center gap-4">
+              <input
+                type="text"
+                placeholder="Full name"
+                className="h-[55px] appearance-none bg-[#d9d9d9] w-full rounded-md p-3 focus:outline-primary focus:outline-[.5px]"
+              />
+              <input
+                type="text"
+                placeholder="Email address"
+                className="h-[55px] appearance-none bg-[#d9d9d9] w-full rounded-md p-3 focus:outline-primary focus:outline-[.5px]"
+              />
+            </div>
+            <div className="w-full flex items-center gap-4">
+              <input
+                type="text"
+                placeholder="Phone number"
+                className="h-[55px] appearance-none bg-[#d9d9d9] w-full rounded-md p-3 focus:outline-primary focus:outline-[.5px]"
+              />
+
+              <input
+                type="text"
+                placeholder="Subject"
+                className="h-[55px] appearance-none bg-[#d9d9d9] w-full rounded-md p-3 focus:outline-primary focus:outline-[.5px]"
+              />
+            </div>
+
+            <textarea
+              placeholder="write a message"
+              className="h-[270px] bg-[#d9d9d9] w-full rounded-md p-3 focus:outline-primary focus:outline-[.5px]"
+            />
+
+            <button className="flex items-center gap-3 place-self-center justify-between mt-3 text-base font-pt bg-primary py-2 px-4 rounded-md w-max font-bold text-white ">
+              <p className="font-bold">Send a message</p>
+            </button>
+          </div>
+          <div className="w-[608px] h-full flex flex-col rounded-r-md bg-primary p-10">
+            <h1>Get in Touch</h1>
+            <p>
+              You want to get in touch , contact us via our number or follow us
+              on social media pages
+            </p>
+          </div>
         </div>
       </div>
     </div>
