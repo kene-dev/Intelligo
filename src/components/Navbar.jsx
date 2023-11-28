@@ -29,9 +29,10 @@ const Navbar = () => {
           className="w-max flex items-center gap-4 text-sm px-5 py-3 bg-[#f5f5f5] cursor-pointer text-black rounded-md"
         >
           <p>
-            {userDetails?.userData?.data?.firstName +
+            {/* {userDetails?.userData?.data?.firstName +
               " " +
-              userDetails?.userData?.data?.lastName}
+              userDetails?.userData?.data?.lastName} */}
+            Felicity Godfrey
           </p>
           <img src={drop} className="w-[13px] h-[13px]" />
         </div>

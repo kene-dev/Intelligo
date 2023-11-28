@@ -19,7 +19,6 @@ const Booth = ({ channelName }) => {
   const { gcToken } = useSelector((state) => state.gcToks);
 
   useEffect(() => {
-    if (client) return;
     const initChat = async () => {
       const chatClient = StreamChat.getInstance("tbdwrkq6q4cb");
       try {

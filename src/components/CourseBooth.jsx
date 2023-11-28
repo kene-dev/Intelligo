@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Booth from "./Booth";
 import join from "../assets/joinBooth.png";
@@ -11,11 +11,13 @@ import { toast } from "react-toastify";
 
 const CourseBooth = ({ groupId, course_id }) => {
   const { userDetails } = useSelector((state) => state.auth);
+  const [currentGroup, setCurrentGroup] = useState(groupId);
   const {
     joinBoothLoading,
     joinBoothSuccess,
     joinBoothError,
     joinBoothMessage,
+    joinBoothData,
   } = useSelector((state) => state.joinBooth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,20 +32,30 @@ const CourseBooth = ({ groupId, course_id }) => {
     dispatch(joinStudyBooth(body));
   };
 
-  //   useEffect(() => {
-  //     if (joinBoothSuccess) {
-  //       toast.success(joinBoothMessage);
-  //       setTimeout(() => {
-  //         dispatch(resetJoinBooth());
-  //       }, 1500);
-  //     }
-  //     if (joinBoothError) {
-  //       toast.error(joinBoothMessage);
-  //       setTimeout(() => {
-  //         dispatch(resetJoinBooth());
-  //       }, 1500);
-  //     }
-  //   }, [joinBoothSuccess, joinBoothError]);
+  useEffect(() => {
+    if (joinBoothSuccess) {
+      toast.success("joined successfully");
+      setTimeout(() => {
+        dispatch(resetJoinBooth());
+      }, 1500);
+    }
+    if (joinBoothError) {
+      toast.error(joinBoothMessage);
+      setTimeout(() => {
+        dispatch(resetJoinBooth());
+      }, 1500);
+    }
+
+    if (joinBoothData) {
+      setCurrentGroup(joinBoothData?.data?.data);
+    }
+  }, [joinBoothSuccess, joinBoothError, joinBoothData]);
+
+  useEffect(() => {
+    return () => {
+      setCurrentGroup(null);
+    };
+  }, []);
 
   if (!userDetails?.userData?.scoringResult) {
     return (
@@ -77,8 +89,8 @@ const CourseBooth = ({ groupId, course_id }) => {
 
   return (
     <div className="h-full">
-      {groupId ? (
-        <Booth channelName={groupId} />
+      {currentGroup ? (
+        <Booth channelName={currentGroup} />
       ) : (
         <div className="w-full h-full flex flex-col gap-5">
           <h1 className="text-3xl font-pt font-semibold">

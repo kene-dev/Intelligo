@@ -161,12 +161,26 @@ const LandingPage = () => {
               <p className="font-bold">Send a message</p>
             </button>
           </div>
-          <div className="w-[608px] h-full flex flex-col rounded-r-md bg-primary p-10">
-            <h1>Get in Touch</h1>
-            <p>
-              You want to get in touch , contact us via our number or follow us
-              on social media pages
-            </p>
+
+          <div className="w-[608px] h-full flex flex-col items-center justify-center gap-14 rounded-r-md bg-primary font-pt text-white p-10">
+            <div className="flex flex-col gap-5">
+              <h1 className="text-3xl text-white text-center">Get in Touch</h1>
+              <p className="text-sm text-white text-center">
+                You want to get in touch , contact us via our number or follow
+                us on social media pages
+              </p>
+            </div>
+
+            <div className="w-full flex flex-col gap-3 text-center">
+              <p className="text-lg text-center">Phone Number</p>
+              <h1 className="text-3xl font-bold text-center">
+                +234 923 634 5555
+              </h1>
+            </div>
+
+            <div className="w-full">
+              <p>Phone Number</p>
+            </div>
           </div>
         </div>
       </div>

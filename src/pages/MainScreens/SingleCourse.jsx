@@ -12,6 +12,10 @@ import { toast } from "react-toastify";
 import CourseModules from "../../components/CourseModules";
 import CourseBooth from "../../components/CourseBooth";
 import { resetJoinBooth } from "../../Redux/features/JoinBoothSlice";
+import {
+  getCourseGroup,
+  resetCourseGroup,
+} from "../../Redux/features/CourseGroupSlice";
 
 const SingleCourse = () => {
   const [active, setActive] = useState("overview");
@@ -24,6 +28,14 @@ const SingleCourse = () => {
     joinBoothSuccess,
     joinBoothError,
     joinBoothMessage,
+  } = useSelector((state) => state.joinBooth);
+
+  const {
+    courseGroupLoading,
+    courseGroupSuccess,
+    courseGroupError,
+    courseGroupMessage,
+    courseGroupData,
   } = useSelector((state) => state.joinBooth);
 
   const [videos, setVideos] = useState(
@@ -45,7 +57,7 @@ const SingleCourse = () => {
   };
 
   useEffect(() => {
-    setCurrentGroup(null);
+    dispatch(getCourseGroup(params.id));
     dispatch(getSingleCourse(params.id));
     const handleBeforeUnload = async () => {
       const currentTime = await playerRef.current.getCurrentTime();
@@ -64,20 +76,22 @@ const SingleCourse = () => {
   }, []);
 
   useEffect(() => {
-    if (joinBoothSuccess) {
-      setCurrentGroup(joinBoothMessage.groupId);
-      toast.success(joinBoothMessage.message);
+    if (courseGroupSuccess) {
+      toast.success(courseGroupMessage);
       setTimeout(() => {
-        dispatch(resetJoinBooth());
+        dispatch(resetCourseGroup());
       }, 1500);
     }
-    if (joinBoothError) {
-      toast.error(joinBoothMessage);
+    if (courseGroupError) {
+      toast.error(courseGroupMessage);
       setTimeout(() => {
-        dispatch(resetJoinBooth());
+        dispatch(resetCourseGroup());
       }, 1500);
     }
-  }, [joinBoothSuccess, joinBoothError]);
+    if (courseGroupData) {
+      setCurrentGroup(courseGroupData);
+    }
+  }, [courseGroupSuccess, courseGroupError, courseGroupData]);
 
   const renderTabContent = () => {
     switch (active) {

@@ -2,14 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 //BASE URL
-const BASE_URL =
-  "https://xd04dcr389.execute-api.eu-west-1.amazonaws.com/klusterthon";
+const BASE_URL = "https://puzzled-necklace-fawn.cyclic.app/api/v1";
 
 const initialState = {
   joinBoothLoading: false,
   joinBoothSuccess: false,
   joinBoothError: false,
-  joinBoothMessage: null,
+  joinBoothMessage: "",
+  joinBoothData: null,
 };
 
 export const joinStudyBooth = createAsyncThunk(
@@ -17,11 +17,10 @@ export const joinStudyBooth = createAsyncThunk(
   async (body, thunkAPI) => {
     // const token = localStorage.getItem("token");
     try {
-      const response = await axios.post(BASE_URL, body, {
-        headers: {
-          Accept: "*/*",
-        },
-      });
+      const response = await axios.post(
+        BASE_URL + "/chat/model/createGroup",
+        body
+      );
       if (response.status === 200) {
         return response.data;
       }
@@ -54,6 +53,7 @@ const joinBoothSlice = createSlice({
       state.joinBoothSuccess = false;
       state.joinBoothLoading = false;
       state.joinBoothMessage = false;
+      state.joinBoothData = null;
     },
   },
   extraReducers: (builder) => {
@@ -65,7 +65,7 @@ const joinBoothSlice = createSlice({
         state.joinBoothLoading = false;
         state.joinBoothSuccess = true;
         state.joinBoothError = false;
-        state.joinBoothMessage = action.payload;
+        state.joinBoothData = action.payload;
       })
       .addCase(joinStudyBooth.rejected, (state, action) => {
         state.joinBoothLoading = false;

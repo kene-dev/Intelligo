@@ -107,7 +107,8 @@ const Home = () => {
           <div className="w-full flex flex-col gap-4 items-start px-16">
             <h1 className="font-bold text-5xl text-black">
               Hi,
-              {userDetails ? userDetails?.userData?.data?.firstName : "Scholar"}
+              {/* {userDetails ? userDetails?.userData?.data?.firstName : "Scholar"} */}
+              Felicity Godfrey
             </h1>
             <p className="text-black/70 text-xl">
               Ready to start your day with some learning?
