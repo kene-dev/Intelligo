@@ -8,7 +8,7 @@ import { resetAuth } from "../../Redux/features/AuthSlice";
 
 const Auth = () => {
   const [display, setDisplay] = useState("login");
-  const { authError, authSuccess, authRegisterSuccess, authMessage } =
+  const { user, authError, authSuccess, authRegisterSuccess, authMessage } =
     useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,7 +47,11 @@ const Auth = () => {
     }
 
     if (authSuccess) {
-      navigate("/layout/home");
+      if (user?.onBoarded === true) {
+        navigate("/layout/home");
+      } else {
+        navigate("/onboard");
+      }
       setTimeout(() => {
         dispatch(resetAuth());
       }, 1500);

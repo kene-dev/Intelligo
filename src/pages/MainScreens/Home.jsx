@@ -24,7 +24,9 @@ const Home = () => {
     (state) => state.gcToks
   );
 
-  const [cInfo, setCinfo] = useState([]);
+  const [cInfo, setCinfo] = useState(
+    userDetails ? userDetails.userData.courseInfo : []
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,7 +45,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    dispatch(getUserDetails());
+    if (userDetails?.userData) {
+      return;
+    } else {
+      dispatch(getUserDetails());
+    }
     dispatch(getCourses());
     dispatch(getStreamToken());
   }, []);
@@ -105,13 +111,12 @@ const Home = () => {
       <div className=" mt-16 px-12">
         <div className="w-full h-[200px] heroBG flex items-center justify-between rounded-md">
           <div className="w-full flex flex-col gap-4 items-start px-16">
-            <h1 className="font-bold text-5xl text-black">
-              Hi,
-              {/* {userDetails ? userDetails?.userData?.data?.firstName : "Scholar"} */}
-              Felicity Godfrey
+            <h1 className="font-bold text-4xl text-white">
+              Study Smarter, Together
             </h1>
-            <p className="text-black/70 text-xl">
-              Ready to start your day with some learning?
+            <p className="text-white/70 text-xl">
+              Transform your study experience into a more engaging, effective,
+              and enjoyable endeavor.
             </p>
           </div>
 

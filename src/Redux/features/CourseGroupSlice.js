@@ -15,19 +15,19 @@ const initialState = {
 export const getCourseGroup = createAsyncThunk(
   "courseGroup/add",
   async (body, thunkAPI) => {
-    // const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.post(
-        BASE_URL + "/user/course/getGroupName",
+        BASE_URL + `/chat/groups/getUserGroup`,
+        body,
         {
           headers: {
             Authorization: ` Bearer ${token}`,
           },
         }
       );
-      if (response.status === 200) {
-        return response.data;
-      }
+      console.log(response.data);
+      return response.data.groupId;
     } catch (error) {
       if (error.response) {
         const obj = error.response.data;

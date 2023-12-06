@@ -18,7 +18,7 @@ export const joinStudyBooth = createAsyncThunk(
     // const token = localStorage.getItem("token");
     try {
       const response = await axios.post(
-        BASE_URL + "/chat/model/createGroup",
+        "https://bcxafrkyjxv2swwjzm6lu5afui0ylfdw.lambda-url.eu-west-1.on.aws/",
         body
       );
       if (response.status === 200) {

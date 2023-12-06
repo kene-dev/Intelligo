@@ -17,6 +17,7 @@ import gcTokenReducer from "../Redux/features/GetChatToken";
 import beginCourseReducer from "../Redux/features/BeginCourseSlice";
 import joinBoothReducer from "../Redux/features/JoinBoothSlice";
 import courseGroupReducer from "../Redux/features/CourseGroupSlice";
+import kycReducer from "./features/KycSlice";
 
 const reducers = combineReducers({
   formstore: IQformReducer,
@@ -26,6 +27,7 @@ const reducers = combineReducers({
   beginCourse: beginCourseReducer,
   joinBooth: joinBoothReducer,
   courseGroup: courseGroupReducer,
+  kyc: kycReducer,
 });
 
 const persistConfig = {

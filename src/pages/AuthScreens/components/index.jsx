@@ -8,6 +8,11 @@ import {
   registerUser,
   resetAuth,
 } from "../../../Redux/features/AuthSlice";
+import {
+  resetKyc,
+  sendKyc,
+  updateKycData,
+} from "../../../Redux/features/KycSlice";
 import { toast } from "react-toastify";
 
 // LOGIN FORM COMPONENT STARTS HERE
@@ -210,6 +215,7 @@ export const RegisterForm = () => {
 // ONBOARD FORMS COMPONENT STARTS HERE
 export const OnboardForm1 = ({ handleProceed }) => {
   const [active, setActive] = useState(null);
+  const dispatch = useDispatch();
   const data = [
     {
       title: "Business",
@@ -229,8 +235,15 @@ export const OnboardForm1 = ({ handleProceed }) => {
     },
   ];
 
-  const handleActive = (item) => {
-    setActive(item);
+  const handleActive = (item, index) => {
+    setActive(index);
+    const bod = { name: "preference", value: item.title };
+    dispatch(updateKycData(bod));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(updateKycData({ name, value }));
   };
 
   return (
@@ -240,7 +253,7 @@ export const OnboardForm1 = ({ handleProceed }) => {
       <div className="w-full flex items-start gap-4">
         {data.map((item, index) => (
           <div
-            onClick={() => handleActive(index)}
+            onClick={() => handleActive(item, index)}
             className="w-full h-[290px]"
             key={item.title}
           >
@@ -258,7 +271,12 @@ export const OnboardForm1 = ({ handleProceed }) => {
         <div className="flex flex-col gap-2">
           <h1 className="text-[#800080]">Not Here?</h1>
           <div className="w-[300px]">
-            <Inputs type={"text"} placeholder={"Type what you do"} />
+            <Inputs
+              type={"text"}
+              name={"preference"}
+              onChange={handleChange}
+              placeholder={"Type what you do"}
+            />
           </div>
         </div>
 
@@ -275,6 +293,7 @@ export const OnboardForm1 = ({ handleProceed }) => {
 
 export const OnboardForm2 = ({ handleProceed }) => {
   const [active, setActive] = useState(null);
+  const dispatch = useDispatch();
   const data = [
     {
       text: "To learn new skills and  knowledge",
@@ -290,8 +309,15 @@ export const OnboardForm2 = ({ handleProceed }) => {
     },
   ];
 
-  const handleActive = (item) => {
-    setActive(item);
+  const handleActive = (item, index) => {
+    setActive(index);
+    const bod = { name: "goals", value: item.text };
+    dispatch(updateKycData(bod));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(updateKycData({ name, value }));
   };
 
   return (
@@ -301,7 +327,7 @@ export const OnboardForm2 = ({ handleProceed }) => {
       <div className="w-full flex items-start gap-4">
         {data.map((item, index) => (
           <div
-            onClick={() => handleActive(index)}
+            onClick={() => handleActive(item, index)}
             className="w-full h-[290px]"
             key={index}
           >
@@ -314,7 +340,12 @@ export const OnboardForm2 = ({ handleProceed }) => {
         <div className="flex flex-col gap-2">
           <h1 className="text-[#800080]">Not Here?</h1>
           <div className="w-[300px]">
-            <Inputs type={"text"} placeholder={"Type what you do"} />
+            <Inputs
+              type={"text"}
+              name={"goals"}
+              onChange={handleChange}
+              placeholder={"Type what you do"}
+            />
           </div>
         </div>
 
@@ -331,6 +362,7 @@ export const OnboardForm2 = ({ handleProceed }) => {
 
 export const OnboardForm3 = ({ handleProceed }) => {
   const [active, setActive] = useState(null);
+  const dispatch = useDispatch();
   const data = [
     {
       title: "Beginner",
@@ -356,8 +388,15 @@ export const OnboardForm3 = ({ handleProceed }) => {
     },
   ];
 
-  const handleActive = (item) => {
-    setActive(item);
+  const handleActive = (item, index) => {
+    setActive(index);
+    const bod = { name: "experience", value: item.title };
+    dispatch(updateKycData(bod));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(updateKycData({ name, value }));
   };
 
   return (
@@ -369,7 +408,7 @@ export const OnboardForm3 = ({ handleProceed }) => {
       <div className="w-full flex items-start gap-4">
         {data.map((item, index) => (
           <div
-            onClick={() => handleActive(index)}
+            onClick={() => handleActive(item, index)}
             className="w-full h-[290px]"
             key={item.title}
           >
@@ -388,7 +427,12 @@ export const OnboardForm3 = ({ handleProceed }) => {
         <div className="flex flex-col gap-2">
           <h1 className="text-[#800080]">Not Here?</h1>
           <div className="w-[300px]">
-            <Inputs type={"text"} placeholder={"Type what you do"} />
+            <Inputs
+              type={"text"}
+              name={"experience"}
+              onChange={handleChange}
+              placeholder={"Type what you do"}
+            />
           </div>
         </div>
 
@@ -405,7 +449,18 @@ export const OnboardForm3 = ({ handleProceed }) => {
 
 export const OnboardForm4 = ({ handleProceed }) => {
   const [active, setActive] = useState(null);
+  const {
+    preference,
+    styles,
+    goals,
+    experience,
+    kycSuccess,
+    kycError,
+    kycMessage,
+    kycLoading,
+  } = useSelector((state) => state.kyc);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const data = [
     {
       title: "Visual",
@@ -420,9 +475,40 @@ export const OnboardForm4 = ({ handleProceed }) => {
     },
   ];
 
-  const handleActive = (item) => {
-    setActive(item);
+  const handleActive = (item, index) => {
+    setActive(index);
+    const bod = { name: "styles", value: item.title };
+    dispatch(updateKycData(bod));
   };
+
+  const handleSubmit = () => {
+    if ((preference, goals, experience, styles)) {
+      const reqBody = {
+        learningInfo: {
+          preference,
+          goals,
+          experience,
+          styles,
+          onBoarded: true,
+        },
+      };
+      dispatch(sendKyc(reqBody));
+    }
+  };
+
+  useEffect(() => {
+    if (kycSuccess) {
+      navigate("/layout/home");
+      dispatch(resetKyc());
+    }
+
+    if (kycError) {
+      toast.error(kycMessage);
+      setTimeout(() => {
+        dispatch(resetKyc());
+      }, 1500);
+    }
+  }, [kycSuccess, kycError, kycMessage]);
 
   return (
     <div className="w-full h-full flex flex-col gap-12 items-start">
@@ -434,7 +520,7 @@ export const OnboardForm4 = ({ handleProceed }) => {
       <div className="w-full flex items-start gap-4">
         {data.map((item, index) => (
           <div
-            onClick={() => handleActive(index)}
+            onClick={() => handleActive(item, index)}
             className="w-full h-[290px] loginBG"
             key={item.title}
           >
@@ -448,10 +534,10 @@ export const OnboardForm4 = ({ handleProceed }) => {
 
       <div className=" w-full flex items-end justify-end ">
         <div
-          onClick={() => navigate("/layout/home")}
+          onClick={handleSubmit}
           className="w-max px-12 py-2 bg-primary cursor-pointer text-white rounded-md"
         >
-          Continue
+          {kycLoading ? "Loading..." : "Finish"}
         </div>
       </div>
     </div>

@@ -24,19 +24,11 @@ const SingleCourse = () => {
   );
 
   const {
-    joinBoothLoading,
-    joinBoothSuccess,
-    joinBoothError,
-    joinBoothMessage,
-  } = useSelector((state) => state.joinBooth);
-
-  const {
-    courseGroupLoading,
     courseGroupSuccess,
     courseGroupError,
     courseGroupMessage,
     courseGroupData,
-  } = useSelector((state) => state.joinBooth);
+  } = useSelector((state) => state.courseGroup);
 
   const [videos, setVideos] = useState(
     singleCourse ? singleCourse.modules[0].videoLink : null
@@ -44,7 +36,7 @@ const SingleCourse = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const playerRef = useRef(null);
-  const location = useLocation();
+  // const location = useLocation();
   const [currentGroup, setCurrentGroup] = useState(null);
 
   const opts = {
@@ -57,8 +49,7 @@ const SingleCourse = () => {
   };
 
   useEffect(() => {
-    dispatch(getCourseGroup(params.id));
-    dispatch(getSingleCourse(params.id));
+    // HANDLE PLAYER TIMING
     const handleBeforeUnload = async () => {
       const currentTime = await playerRef.current.getCurrentTime();
       const duration = await playerRef.current.getDuration();
@@ -75,21 +66,31 @@ const SingleCourse = () => {
     };
   }, []);
 
+  // Fetch course group and data
+  useEffect(() => {
+    // Async function defined inside useEffect
+    dispatch(getCourseGroup({ courseId: params.id }));
+    dispatch(getSingleCourse(params.id));
+
+    // Cleanup function
+    return () => {
+      // You may also need to perform cleanup actions here
+    };
+  }, [params.id, dispatch]); // Add dependencies here
+
   useEffect(() => {
     if (courseGroupSuccess) {
-      toast.success(courseGroupMessage);
+      setCurrentGroup(courseGroupData);
+      toast.success("GROUP DATA RETRIEVED");
       setTimeout(() => {
         dispatch(resetCourseGroup());
-      }, 1500);
+      }, 2000);
     }
     if (courseGroupError) {
       toast.error(courseGroupMessage);
       setTimeout(() => {
         dispatch(resetCourseGroup());
-      }, 1500);
-    }
-    if (courseGroupData) {
-      setCurrentGroup(courseGroupData);
+      }, 2000);
     }
   }, [courseGroupSuccess, courseGroupError, courseGroupData]);
 

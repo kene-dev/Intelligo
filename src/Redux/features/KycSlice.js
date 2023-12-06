@@ -18,11 +18,16 @@ const initialState = {
 export const sendKyc = createAsyncThunk(
   "kycSlice/send",
   async (body, thunkAPI) => {
+    const id = localStorage.getItem("uid");
+    console.log(body);
     try {
-      const response = await axios.post(BASE_URL + `/auth/register`, body);
+      const response = await axios.patch(
+        BASE_URL + `/user/editUser/${id}`,
+        body
+      );
       console.log(response.data);
       if (response.status === 200) {
-        return "Account successfully registered";
+        return response.data.msg;
       }
     } catch (error) {
       if (error.response) {

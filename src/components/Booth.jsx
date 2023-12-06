@@ -26,6 +26,8 @@ const Booth = ({ channelName }) => {
         const userToken = gcToken.token;
         const userId = userDetails.userData._id;
         setClient(chatClient);
+        const name = userDetails.userData.data.firstName;
+        chatClient.connectUser({ id: userId, name: name }, userToken);
 
         if (channelName) {
           // Connect to specific channel
@@ -33,9 +35,6 @@ const Booth = ({ channelName }) => {
           await specificChannel.watch();
           setChannel(specificChannel);
           console.log(specificChannel);
-        } else {
-          const name = userDetails.userData.data.firstName;
-          chatClient.connectUser({ id: userId, name: name }, userToken);
         }
       } catch (error) {
         console.error("Error initializing chat:", error);
